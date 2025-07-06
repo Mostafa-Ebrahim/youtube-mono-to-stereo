@@ -30,7 +30,7 @@ A Chrome browser extension that converts mono audio to stereo for YouTube videos
 4. **Select Mode**: Choose your preferred conversion mode:
    - **Left**: Uses only the left audio channel
    - **Right**: Uses only the right audio channel
-   - **Average**: Blends both channels for balanced output
+   - **Merge**: Blends both channels for balanced output
 5. **Enjoy**: The audio will automatically convert based on your settings
 
 ## 🎯 Compatibility
