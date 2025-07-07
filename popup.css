@@ -1,6 +1,6 @@
 body {
-  font-family: "Montserrat", -apple-system, BlinkMacSystemFont,
-    "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Helvetica Neue", Arial, sans-serif;
   min-width: 320px;
   max-width: 360px;
   padding: 0;
@@ -28,8 +28,7 @@ body {
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.3);
 }
 
 h2 {
@@ -55,8 +54,7 @@ h2 {
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
@@ -66,8 +64,7 @@ h2 {
   background: rgba(20, 20, 25, 0.9);
   transform: translateY(-2px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+    inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
 }
 
 .control-group::before {
@@ -147,8 +144,8 @@ select:hover {
 select:focus {
   outline: none;
   border-color: rgba(100, 180, 255, 0.8);
-  box-shadow: 0 0 0 4px rgba(100, 180, 255, 0.3),
-    0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(100, 180, 255, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .footer {
@@ -188,8 +185,7 @@ select:focus {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .slider:before {
@@ -211,8 +207,7 @@ select:focus {
 
 .slider:hover {
   transform: scale(1.02);
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3),
-    0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 input:checked + .slider {
@@ -226,6 +221,50 @@ input:checked + .slider:before {
   transform: translateX(22px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.control-group.disabled {
+  opacity: 0.4;
+  filter: grayscale(0.8);
+  pointer-events: none;
+  background: rgba(15, 15, 20, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.control-group.disabled:hover {
+  transform: none;
+  background: rgba(15, 15, 20, 0.4) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+select:disabled {
+  background: rgba(10, 10, 15, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.4) !important;
+  cursor: not-allowed;
+}
+
+select:disabled:hover {
+  transform: none;
+  background: rgba(10, 10, 15, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.toggle-switch input:disabled + .slider {
+  background: rgba(25, 25, 30, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  cursor: not-allowed;
+}
+
+.toggle-switch input:disabled + .slider:hover {
+  transform: none;
+}
+
+.toggle-switch input:disabled + .slider:before {
+  background: rgba(240, 240, 245, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
 @media (max-width: 340px) {
