@@ -1,4 +1,4 @@
-# Mono to Stereo Audio Converter
+# Youtube Mono To Stereo Extension
 
 A Chromium extension that converts mono audio to stereo for YouTube videos, giving you better control over audio playback and channel distribution.
 
