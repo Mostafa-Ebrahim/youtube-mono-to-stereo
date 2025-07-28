@@ -19,8 +19,9 @@ A Chromium extension that converts mono audio to stereo for YouTube videos, givi
 4. Click "Load unpacked" and select the extension folder
 5. The extension icon should appear in your browser toolbar
 
-### From Chrome Web Store
-*Coming soon...*
+### From Web Stores
+- Edge add-on: https://microsoftedge.microsoft.com/addons/detail/mono-to-stereo-audio-conv/ojpmibbnokjobbincepgachebcdlcclh
+- Chrome web store: *Coming soon...*
 
 ## 🎛️ Usage
 
