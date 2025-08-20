@@ -27,8 +27,5 @@
       "run_at": "document_idle"
     }
   ],
-  "host_permissions": ["*://*.youtube.com/*"],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' https://cdn.jsdelivr.net; object-src 'self'"
-  }
+  "host_permissions": ["*://*.youtube.com/*"]
 }
