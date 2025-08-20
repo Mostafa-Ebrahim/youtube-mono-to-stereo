@@ -1,31 +1,22 @@
-// Simple vocal isolation using spectral processing with TensorFlow.js
-let tf;
-let isModelLoaded = false;
-
-// Load TensorFlow.js
-async function loadTensorFlow() {
-  if (typeof window.tf === 'undefined') {
-    // Load TensorFlow.js from CDN
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.15.0/dist/tf.min.js';
-    script.onload = () => {
-      tf = window.tf;
-      isModelLoaded = true;
-      console.log('TensorFlow.js loaded for vocal isolation');
-    };
-    document.head.appendChild(script);
-  } else {
-    tf = window.tf;
-    isModelLoaded = true;
-  }
-}
-
-// Simple vocal isolation using center channel extraction and spectral processing
+// Advanced vocal isolation using multiple algorithms
 function createVocalIsolationProcessor(audioContext, sourceNode) {
   const splitter = audioContext.createChannelSplitter(2);
   const merger = audioContext.createChannelMerger(2);
   const scriptProcessor = audioContext.createScriptProcessor(4096, 2, 2);
   
+  // High-pass filter for vocal enhancement
+  const highPassFilter = audioContext.createBiquadFilter();
+  highPassFilter.type = 'highpass';
+  highPassFilter.frequency.value = 80; // Remove low frequencies (bass, kick drums)
+  
+  // Compressor for vocal presence
+  const compressor = audioContext.createDynamicsCompressor();
+  compressor.threshold.value = -24;
+  compressor.knee.value = 30;
+  compressor.ratio.value = 12;
+  compressor.attack.value = 0.003;
+  compressor.release.value = 0.25;
+  
   sourceNode.connect(splitter);
   splitter.connect(scriptProcessor);
   
@@ -38,85 +29,37 @@ function createVocalIsolationProcessor(audioContext, sourceNode) {
     const outputLeft = outputBuffer.getChannelData(0);
     const outputRight = outputBuffer.getChannelData(1);
     
-    // Vocal isolation: subtract right from left (removes center channel)
-    // This removes most of the instrumental music that's panned center
+    // Advanced vocal isolation algorithm
     for (let i = 0; i < inputLeft.length; i++) {
-      const vocal = (inputLeft[i] - inputRight[i]) * 2.0; // Amplify the difference
-      const clampedVocal = Math.max(-1, Math.min(1, vocal)); // Clamp to prevent distortion
-      outputLeft[i] = clampedVocal;
-      outputRight[i] = clampedVocal;
+      // Center channel extraction (removes center-panned instruments)
+      const center = (inputLeft[i] + inputRight[i]) * 0.5;
+      const side = (inputLeft[i] - inputRight[i]) * 0.5;
+      
+      // Enhanced vocal isolation with frequency weighting
+      const vocal = side * 3.0; // Amplify stereo difference (vocals)
+      const reducedCenter = center * 0.15; // Reduce center channel (instruments)
+      
+      // Combine and apply dynamic range compression
+      let output = vocal + reducedCenter;
+      
+      // Soft limiting to prevent distortion
+      if (Math.abs(output) > 0.8) {
+        output = Math.sign(output) * (0.8 + (Math.abs(output) - 0.8) * 0.2);
+      }
+      
+      // Final clamp
+      output = Math.max(-1, Math.min(1, output));
+      
+      outputLeft[i] = output;
+      outputRight[i] = output;
     }
   };
   
-  scriptProcessor.connect(merger);
-  return merger;
-}
-
-// Enhanced vocal isolation using TensorFlow.js for spectral processing
-function createAIVocalIsolationProcessor(audioContext, sourceNode) {
-  if (!isModelLoaded) {
-    console.warn('TensorFlow.js not loaded, falling back to basic vocal isolation');
-    return createVocalIsolationProcessor(audioContext, sourceNode);
-  }
+  // Connect through filters for enhanced vocal clarity
+  scriptProcessor.connect(highPassFilter);
+  highPassFilter.connect(compressor);
+  compressor.connect(merger);
   
-  const splitter = audioContext.createChannelSplitter(2);
-  const merger = audioContext.createChannelMerger(2);
-  const scriptProcessor = audioContext.createScriptProcessor(2048, 2, 2);
-  
-  sourceNode.connect(splitter);
-  splitter.connect(scriptProcessor);
-  
-  scriptProcessor.onaudioprocess = function(audioProcessingEvent) {
-    const inputBuffer = audioProcessingEvent.inputBuffer;
-    const outputBuffer = audioProcessingEvent.outputBuffer;
-    
-    const inputLeft = inputBuffer.getChannelData(0);
-    const inputRight = inputBuffer.getChannelData(1);
-    const outputLeft = outputBuffer.getChannelData(0);
-    const outputRight = outputBuffer.getChannelData(1);
-    
-    try {
-      // Convert to TensorFlow tensors for processing
-      const leftTensor = tf.tensor1d(Array.from(inputLeft));
-      const rightTensor = tf.tensor1d(Array.from(inputRight));
-      
-      // Compute spectral features
-      const avgTensor = leftTensor.add(rightTensor).div(2);
-      const diffTensor = leftTensor.sub(rightTensor);
-      
-      // Simple vocal enhancement: amplify the difference (vocals) and reduce average (music)
-      const vocalTensor = diffTensor.mul(2.5).add(avgTensor.mul(0.1));
-      
-      // Get processed audio data (use sync method to avoid async issues)
-      const processedAudio = vocalTensor.dataSync();
-      
-      // Copy processed audio to output
-      for (let i = 0; i < Math.min(processedAudio.length, inputLeft.length); i++) {
-        const sample = Math.max(-1, Math.min(1, processedAudio[i])); // Clamp to prevent distortion
-        outputLeft[i] = sample;
-        outputRight[i] = sample;
-      }
-      
-      // Cleanup tensors
-      leftTensor.dispose();
-      rightTensor.dispose();
-      avgTensor.dispose();
-      diffTensor.dispose();
-      vocalTensor.dispose();
-      
-    } catch (error) {
-      console.warn('AI processing failed, using fallback:', error);
-      // Fallback to basic vocal isolation
-      for (let i = 0; i < inputLeft.length; i++) {
-        const vocal = (inputLeft[i] - inputRight[i]) * 2;
-        const clampedVocal = Math.max(-1, Math.min(1, vocal));
-        outputLeft[i] = clampedVocal;
-        outputRight[i] = clampedVocal;
-      }
-    }
-  };
-  
-  scriptProcessor.connect(merger);
   return merger;
 }
 
@@ -175,21 +118,29 @@ function patchAudio(mode, enableMusicRemoval = false) {
     
     if (enableMusicRemoval) {
       // Apply vocal isolation first, then stereo conversion
-      const vocalProcessor = createAIVocalIsolationProcessor(audioCtx, source);
+      const vocalProcessor = createVocalIsolationProcessor(audioCtx, source);
       finalOutput = convertToStereo(audioCtx, vocalProcessor, mode);
-      console.log("AI vocal isolation enabled with stereo mode:", mode);
+      console.log("🎤 Vocal isolation enabled with stereo mode:", mode);
     } else {
       // Just apply stereo conversion
       finalOutput = convertToStereo(audioCtx, source, mode);
-      console.log("Stereo audio enabled with mode:", mode);
+      console.log("🎵 Stereo audio enabled with mode:", mode);
     }
 
     finalOutput.connect(audioCtx.destination);
+    
+    // Resume audio context if needed (Chrome autoplay policy)
+    if (audioCtx.state === 'suspended') {
+      const resumeAudio = () => {
+        audioCtx.resume();
+        document.removeEventListener('click', resumeAudio);
+        document.removeEventListener('keydown', resumeAudio);
+      };
+      document.addEventListener('click', resumeAudio);
+      document.addEventListener('keydown', resumeAudio);
+    }
   });
 }
-
-// Initialize TensorFlow.js
-loadTensorFlow();
 
 chrome.storage.sync.get(["enabled", "mode", "musicRemoval"], (data) => {
   if (data.enabled) {

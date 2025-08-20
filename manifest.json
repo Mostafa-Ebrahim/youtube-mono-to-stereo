@@ -3,7 +3,7 @@
   "name": "Mono to Stereo Audio Converter",
   "version": "1.0",
   "author": "Mostafa Ebrahim",
-  "description": "Convert mono audio to stereo and control which channel to duplicate. Now with AI-powered music removal.",
+  "description": "Convert mono audio to stereo and control which channel to duplicate. Now with advanced music removal.",
   "permissions": ["scripting", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html",
