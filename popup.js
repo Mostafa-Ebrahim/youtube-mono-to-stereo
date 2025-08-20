@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("toggle");
   const mode = document.getElementById("mode");
+  const musicRemoval = document.getElementById("musicRemoval");
 
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     const currentTab = tabs[0];
@@ -9,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isYouTube) {
       toggle.disabled = true;
       mode.disabled = true;
+      musicRemoval.disabled = true;
 
       const controlGroups = document.querySelectorAll(".control-group");
       controlGroups.forEach((group) => {
@@ -33,9 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    chrome.storage.sync.get(["enabled", "mode"], (data) => {
+    chrome.storage.sync.get(["enabled", "mode", "musicRemoval"], (data) => {
       toggle.checked = data.enabled || false;
       mode.value = data.mode || "average";
+      musicRemoval.checked = data.musicRemoval || false;
     });
 
     toggle.addEventListener("change", () => {
@@ -46,6 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     mode.addEventListener("change", () => {
       chrome.storage.sync.set({ mode: mode.value }, () => {
+        chrome.tabs.reload();
+      });
+    });
+
+    musicRemoval.addEventListener("change", () => {
+      chrome.storage.sync.set({ musicRemoval: musicRemoval.checked }, () => {
         chrome.tabs.reload();
       });
     });

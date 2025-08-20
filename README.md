@@ -1,6 +1,6 @@
 # Youtube Mono To Stereo Extension
 
-A Chromium extension that converts mono audio to stereo for YouTube videos, giving you better control over audio playback and channel distribution.
+A Chromium extension that converts mono audio to stereo for YouTube videos, giving you better control over audio playback and channel distribution. Now with AI-powered music removal for vocal isolation.
 
 ## 🚀 Features
 
@@ -9,6 +9,10 @@ A Chromium extension that converts mono audio to stereo for YouTube videos, givi
   - **Left Channel**: Duplicates left channel to both speakers
   - **Right Channel**: Duplicates right channel to both speakers  
   - **Average**: Mixes both channels and outputs to both speakers
+- **🎤 AI Music Removal**: NEW! Uses TensorFlow.js to separate vocals from background music
+  - Removes instrumental tracks while keeping vocals
+  - Runs completely in your browser (no data sent to servers)
+  - Perfect for karaoke, vocal analysis, or removing background music
 
 ## 📦 Installation
 
@@ -32,13 +36,15 @@ A Chromium extension that converts mono audio to stereo for YouTube videos, givi
    - **Left**: Uses only the left audio channel
    - **Right**: Uses only the right audio channel
    - **Merge**: Blends both channels for balanced output
-5. **Enjoy**: The audio will automatically convert based on your settings
+5. **🎤 Enable Music Removal** (Optional): Toggle the AI music removal to isolate vocals
+6. **Enjoy**: The audio will automatically convert based on your settings
 
 ## 🎯 Compatibility
 
 - **Browser**: Chrome 88+ (Manifest V3 support required)
 - **Websites**: Currently supports YouTube (*.youtube.com)
 - **Audio Formats**: Works with all audio/video formats supported by YouTube
+- **AI Processing**: Uses TensorFlow.js 4.15.0+ for music separation (loads automatically)
 
 ## 📝 License
 
