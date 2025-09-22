@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Mono to Stereo Audio Converter",
-  "version": "1.0",
+  "version": "1.0.1",
   "author": "Mostafa Ebrahim",
   "description": "Convert mono audio to stereo and control which channel to duplicate.",
   "permissions": ["scripting", "activeTab", "storage"],
