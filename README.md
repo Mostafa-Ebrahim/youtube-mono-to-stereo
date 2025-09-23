@@ -1,13 +1,13 @@
-# Youtube Mono To Stereo Extension
+# Mono To Stereo Extension
 
-A Chromium extension that converts mono audio to stereo for YouTube videos, giving you better control over audio playback and channel distribution.
+A Chromium extension that converts mono audio to stereo for videos, giving you better control over audio playback and channel distribution.
 
 ## 🚀 Features
 
 - **Real-time Conversion**: Converts mono audio streams to stereo in real-time
 - **Multiple Conversion Modes**:
-  - **Left Channel**: Duplicates left channel to both speakers
-  - **Right Channel**: Duplicates right channel to both speakers  
+  - **Left Channel**: Duplicates the left channel to both speakers
+  - **Right Channel**: Duplicates the right channel to both speakers  
   - **Average**: Mixes both channels and outputs to both speakers
 
 ## 📦 Installation
@@ -25,7 +25,7 @@ A Chromium extension that converts mono audio to stereo for YouTube videos, givi
 
 ## 🎛️ Usage
 
-1. **Navigate to YouTube**: Go to any YouTube video
+1. **Navigatation**: Go to any video on the internet
 2. **Open Extension**: Click the extension icon in your browser toolbar
 3. **Enable Conversion**: Toggle the switch to "ON"
 4. **Select Mode**: Choose your preferred conversion mode:
