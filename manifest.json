@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Mono to Stereo Audio Converter",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "author": "Mostafa Ebrahim",
-  "description": "Convert mono audio to stereo and control which channel to duplicate.",
+  "description": "Convert mono audio to stereo and control which channel to duplicate on any website with video/audio content.",
   "permissions": ["scripting", "activeTab", "storage"],
   "action": {
     "default_popup": "popup.html",
@@ -22,10 +22,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*"],
+      "matches": ["<all_urls>"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],
-  "host_permissions": ["*://*.youtube.com/*"]
+  "host_permissions": ["<all_urls>"]
 }
